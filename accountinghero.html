@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+      <title>Accounting Hero</title> 
+    <style> 
+        table { 
+            border: 1px solid black; 
+          margin-left: auto; 
+          margin-right: auto; 
+        } 
+
+        input[type="button"] { 
+            width: 100%; 
+            background-color: white; 
+            color: black; 
+            font-size: 24px; 
+            font-weight: bold; 
+            border: none; 
+          border: 1px solid black; 
+        } 
+
+        input[type="text"] { 
+            font-size: 24px; 
+            font-weight: bold; 
+            border: none; 
+            border-radius: 5px; 
+            border: 2px solid black; 
+        } 
+    </style> 
+</head> 
+
+<body> 
+  <div id ="title" style = "margin: auto;text-align: center">
+    <h1>Accounting Hero!</h1>
+    <h2>The accounting game about of all time</h2>
+    <p>Add up all of the invoices!</p>
+    <button onclick="startit()">Click to start</button>
+    
+  </div>
+  <div id= "game" style = "display: none">
+    <div>
+      <div style="width: 50%; height: 100%;float:left;">
+        
+        <table id="calcu"> 
+            <tr> 
+                <td colspan="3"><input type="text" id="result"></td> 
+            </tr> 
+            <tr> 
+                <td><input type="button" value="1" onclick="dis('1')"
+                            onkeydown="myFunction(event)"> </td> 
+                <td><input type="button" value="2" onclick="dis('2')"
+                            onkeydown="myFunction(event)"> </td> 
+                <td><input type="button" value="3" onclick="dis('3')"
+                            onkeydown="myFunction(event)"> </td> 
+                <td><input type="button" value="/" onclick="dis('/')"
+                            onkeydown="myFunction(event)"> </td> 
+            </tr> 
+            <tr> 
+                <td><input type="button" value="4" onclick="dis('4')"
+                            onkeydown="myFunction(event)"> </td> 
+                <td><input type="button" value="5" onclick="dis('5')"
+                            onkeydown="myFunction(event)"> </td> 
+                <td><input type="button" value="6" onclick="dis('6')"
+                            onkeydown="myFunction(event)"> </td> 
+                <td><input type="button" value="*" onclick="dis('*')"
+                            onkeydown="myFunction(event)"> </td> 
+            </tr> 
+            <tr> 
+                <td><input type="button" value="7" onclick="dis('7')"
+                            onkeydown="myFunction(event)"> </td> 
+                <td><input type="button" value="8" onclick="dis('8')"
+                            onkeydown="myFunction(event)"> </td> 
+                <td><input type="button" value="9" onclick="dis('9')"
+                            onkeydown="myFunction(event)"> </td> 
+                <td><input type="button" value="-" onclick="dis('-')"
+                            onkeydown="myFunction(event)"> </td> 
+            </tr> 
+            <tr> 
+                <td><input type="button" value="0" onclick="dis('0')"
+                            onkeydown="myFunction(event)"> </td> 
+                <td><input type="button" value="." onclick="dis('.')"
+                            onkeydown="myFunction(event)"> </td> 
+
+                <!-- solve function call function solve to evaluate value -->
+                <td><input type="button" value="=" onclick="solve()"> </td> 
+
+                <td><input type="button" value="+" onclick="dis('+')"
+                            onkeydown="myFunction(event)"> </td> 
+            </tr> 
+        </table>
+        <img src="https://as1.ftcdn.net/v2/jpg/03/16/01/06/1000_F_316010690_Wm9W2fSc2KTVvuyuJDZSb7xDNZ77q0qC.jpg" style="width: 100%">
+      </div>
+  
+    <div style="width: 33%; height: 100%;float:left;">
+      <p id="totalnum">Total recorded: $0.00 </p>
+      <h1 id = "numdisp">Invoice: $17.29</h1>
+      <p id="timer">timer: </p>
+      <p id="HP">HP: 5</p>
+      
+     </div>
+  </div>
+  </div>
+
+
+  
+    <script> 
+        var xVal = 700;
+        var resetVal = 700;
+        var HP = 5;
+        var intnum = 1729;
+        var totalnum = 1729;
+        var xElement = document.getElementById("timer");
+        var dead = false;
+        var Interval;
+        function startit(){
+          document.getElementById("game").style.display = "block";
+          document.getElementById("title").style.display = "none";
+          Interval = window.setInterval(startWatch, 10);
+        }
+        
+      
+        function nextNum(){
+          xVal = resetVal;
+          resetVal -= 10;
+          document.getElementById("totalnum").innerHTML = "Total recorded: $" + (totalnum/100).toFixed(2); 
+          intnum = Math.floor(Math.random() * 10000);
+          totalnum += intnum;
+          stringnum = "Invoice: $"+(intnum/100).toFixed(2)
+          document.getElementById("numdisp").innerHTML = stringnum; 
+        }
+
+        function startWatch(){
+
+            xVal -= 1;
+            if (Math.abs(document.getElementById("result").value-totalnum/100) < 0.0001){
+              nextNum();
+            }
+            if (xVal <= 0){
+              HP -= 1;
+              document.getElementById("HP").innerHTML = "HP: " + HP.toString();
+              totalnum -= intnum;
+              nextNum();
+            }
+            xElement.innerHTML = "timer: " + (xVal/100).toString();
+            if (HP <= 0){
+              dead = true;
+              clearInterval(Interval);
+              document.getElementById("numdisp").innerHTML = "Game over!";
+              document.getElementById("timer").innerHTML = "";
+            }
+            
+        }
+       
+        // Function that display value 
+        function dis(val) { 
+            document.getElementById("result").value += val 
+        } 
+
+        function myFunction(event) { 
+            if (event.key == '0' || event.key == '1' 
+                || event.key == '2' || event.key == '3' 
+                || event.key == '4' || event.key == '5' 
+                || event.key == '6' || event.key == '7' 
+                || event.key == '8' || event.key == '9' 
+                || event.key == '+' || event.key == '-' 
+                || event.key == '*' || event.key == '/') 
+                document.getElementById("result").value += event.key; 
+        } 
+
+        var cal = document.getElementById("calcu"); 
+        cal.onkeyup = function (event) { 
+            if (event.keyCode === 13) { 
+                console.log("Enter"); 
+                let x = document.getElementById("result").value 
+                console.log(x); 
+                solve(); 
+            } 
+        } 
+
+        // Function that evaluates the digit and return result 
+        function solve() { 
+            let x = document.getElementById("result").value;
+            let y = null;
+            try{
+              y = eval(x);
+            }
+            catch (error) {
+              HP -= 1;
+              document.getElementById("HP").innerHTML = "HP: " + HP.toString();
+              y = 0;
+            }
+            
+            document.getElementById("result").value = +(y.toFixed(2));
+        } 
+
+        // Function that clear the display 
+        function clr() { 
+            document.getElementById("result").value = "" 
+        } 
+    </script> 
+</body> 
+
+</html> 
